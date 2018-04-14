@@ -1,0 +1,32 @@
+
+platform:
+    - x64
+
+environment:
+  matrix:
+    - TARGET: x86_64-pc-windows-msvc
+      CHANNEL: stable
+      ARCH: x86_64
+
+install:
+    - curl -sSf -o rustup-init.exe https://win.rustup.rs
+    - rustup-init.exe --default-host %TARGET% --default-toolchain %CHANNEL% -y
+    - set PATH=%PATH%;C:\Users\appveyor\.cargo\bin
+    - rustc -Vv
+    - cargo -V
+
+build: false
+
+build_script:
+    - cmd: cargo build --release --target=%TARGET%
+
+after_build:
+    - cmd: 7z a re-%APPVEYOR_REPO_TAG_NAME%-%ARCH%-win.zip %APPVEYOR_BUILD_FOLDER%\target\%TARGET%\release\re*.exe
+
+test_script:
+    - cmd: cargo test
+
+artifacts:
+    - path: re*.zip
+      name: re
+
