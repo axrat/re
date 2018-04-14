@@ -21,7 +21,7 @@ build_script:
     - cmd: cargo build --release --target=%TARGET%
 
 after_build:
-    - cmd: 7z a re-%APPVEYOR_REPO_TAG_NAME%-%ARCH%-win.zip %APPVEYOR_BUILD_FOLDER%\target\%TARGET%\release\re*.exe
+    - cmd: 7z a re.zip %APPVEYOR_BUILD_FOLDER%\target\%TARGET%\release\re*.exe
 
 test_script:
     - cmd: cargo test
